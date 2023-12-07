@@ -1,0 +1,2 @@
+i want that i have to see a invoice on visual force page
+invoice(custom object has) the details of invoice pass the invoice id to visual force page 

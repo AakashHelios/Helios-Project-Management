@@ -1,0 +1,110 @@
+<apex:page showHeader="false" applyBodyTag="false" applyHtmlTag="false"  controller="InvoiceController" renderAs="pdf"  >
+  
+    <head>
+<Style>
+   		 @page {  
+             size: A4 Landscape; /* ISO/JIS A4 (210mm�297mm) */  
+             margin: 0.5mm; 
+          } 
+    body {
+            font-family: Arial, sans-serif;
+    		 font-size: 11px;
+        }
+   		 @page:first {  
+             size: A4 Portrait; /* ISO/JIS A4 (210mm�297mm) */ 
+             margin: 5mm; 
+             margin-top: 3mm; 
+
+          }  
+   			 .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .footer-content {
+                font-size: 10px;
+            }
+  
+	</Style>
+    </head>
+    <body>
+        
+   
+        <div style="width: 100%; text-align: center; margin-bottom: 20px;">
+            <img src="{!$Resource.Helios_logo}" width="700" height="110" />
+        </div>
+    
+    
+    <table style="width: 100%; border-collapse: collapse; border: hidden;">
+    <tr>
+  <td style="width: 30%; padding: 20px 20px 10px 0; border-right: hidden; text-align: center;">
+         <br/><br/>
+    <span style="font-weight: bold; font-size: 20px;">INVOICE</span>
+    <br/>
+    <div style="margin-top: 20px;">GSTIN: <br style="line-height: 2;"/> <strong>{!invoice.GSTIN__c}</strong></div>
+
+</td>
+
+
+
+        <td style="width: 70%; padding: 110px 20px 10px 0;">
+            <div>Attention: {!invoice.Attention__c}</div>
+            <br/>
+            <br/>
+            <div>Date:
+             <apex:outputText value="{0, date, d MMMM}">
+        <apex:param value="{!invoiceDate}" />
+    </apex:outputText>
+            </div>
+            <br/>
+            <div>Period:
+    <apex:outputText value="{0, date, d MMMM}">
+        <apex:param value="{!invoice.Start_Date__c}" />
+    </apex:outputText>
+    -
+    <apex:outputText value="{0, date, d MMMM}">
+        <apex:param value="{!invoice.End_Date__c}" />
+    </apex:outputText>
+</div>
+            <br/>
+            <div>Invoice Number: {!invoice.Invoice_Number__c}</div>
+            <br/>
+            <br/>
+            <div>Terms: {!invoice.Terms__c}</div>
+        </td>
+    </tr>
+</table>
+<div style="width: 100%; margin-top: 20px; text-align: left; margin-left: auto; margin-right: 0.5in;">
+    <table style="width: 70%; border-collapse: collapse; margin-left: auto; margin-right: 0;">
+        <tr style="font-weight: bold;">
+            <td style="border: 1px solid black; padding: 10px;">Description</td>
+      <td style="border: 1px solid black; padding: 10px;"><span style="display:inline-block; width: 35px;">&nbsp;</span>Hours <span style="float: right; padding-left: 10px;">Price</span></td>
+
+            <td style="border: 1px solid black; padding: 10px;">Cost</td>
+        </tr>
+        <apex:repeat value="{!invoiceLineItems}" var="item">
+            <tr>
+                <td style="border: 1px solid black; padding: 10px;">{!item.Description__c}</td>
+               <td style="border: 1px solid black; padding: 10px;">@Hours &nbsp; {!item.Hours__c} <span style="float: right;">${!item.Hourly_Rate__c}</span></td>
+				 <td style="border: 1px solid black; padding: 10px;">${!item.Total_Cost__c}</td>
+            </tr>
+        </apex:repeat>
+        <tr>
+            <td style="border: 1px solid black; padding: 10px; text-align: left;" colspan="2"><strong>Total:</strong></td>
+            <td style="border: 1px solid black; padding: 10px;">${!totalAmount}</td>
+        </tr>
+    </table>
+</div>
+
+    <div class="footer">
+        <div style="width: 100%; text-align: center; margin-top: 20px;">
+            Helios Web Services LLP | A-36, Gokul Vatika, JLN Road, Jaipur, India |
+            <a href="mailto:info@heliostechservice.com">info@heliostechservice.com</a>
+        </div>
+    </div>
+         </body>
+    
+</apex:page>
